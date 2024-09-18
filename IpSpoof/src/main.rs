@@ -66,14 +66,15 @@ fn build_packet(
 #[tokio::main]
 async fn main() {
     let mut rng = rand::thread_rng();
-    let source_ip: [u8; 4] = [rng.gen(), rng.gen(), rng.gen(), rng.gen()];
-    let destination_ip: [u8; 4] = [rng.gen(), rng.gen(), rng.gen(), rng.gen()];
-    let destination_port: u16 = rng.gen();
-    let source_port: u16 = rng.gen();
+    let source_ip: [u8; 4] = [1, 1, 1, 1];
+    let destination_ip: [u8; 4] = [1, 1, 1, 1];
+    let destination_port: u16 = 4444;
+    let source_port: u16 = 4444;
     let payload: &[u8; 12] = b"Hello, world";
+    let amount: i32 = 1000;
 
     let tasks = futures::future::join_all(
-        (0..1000).map(|_| ip_spoof(source_ip, destination_ip, destination_port, source_port, payload))
+        (0..amount).map(|_| ip_spoof(source_ip, destination_ip, destination_port, source_port, payload))
     );
 
     tasks.await.into_iter().for_each(|result| {
